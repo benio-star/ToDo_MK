@@ -29,7 +29,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Task", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Task", mappedBy="categorygit pub")
      */
     private $tasks;
 
