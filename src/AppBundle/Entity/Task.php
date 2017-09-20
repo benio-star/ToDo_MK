@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Task
@@ -24,21 +25,28 @@ class Task
     /**
      * @var string
      *
+     * @Assert\NotBlank()
+     * @Assert\Length(min="2")
+     *
      * @ORM\Column(name="title", type="string", length=255)
      */
-    private $title;
+    private $title = '';
 
     /**
      * @var string
      *
+     * @Assert\Length(max="600")
+     *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
-    private $description;
+    private $description = '';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="due_date", type="datetime")
+     * @Assert\Type("\DateTime")
+     *
+     * @ORM\Column(name="due_date", type="datetime", nullable=true)
      */
     private $dueDate;
 
@@ -60,7 +68,7 @@ class Task
      *
      * @return integer 
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -71,7 +79,7 @@ class Task
      * @param string $title
      * @return Task
      */
-    public function setTitle($title)
+    public function setTitle($title): Task
     {
         $this->title = $title;
 
@@ -83,7 +91,7 @@ class Task
      *
      * @return string 
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -94,7 +102,7 @@ class Task
      * @param string $description
      * @return Task
      */
-    public function setDescription($description)
+    public function setDescription($description): Task
     {
         $this->description = $description;
 
@@ -106,7 +114,7 @@ class Task
      *
      * @return string 
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -117,7 +125,7 @@ class Task
      * @param \DateTime $dueDate
      * @return Task
      */
-    public function setDueDate($dueDate)
+    public function setDueDate(\DateTime $dueDate = null): Task
     {
         $this->dueDate = $dueDate;
 
@@ -140,7 +148,7 @@ class Task
      * @param boolean $done
      * @return Task
      */
-    public function setDone($done)
+    public function setDone($done): Task
     {
         $this->done = $done;
 
@@ -163,7 +171,7 @@ class Task
      * @param \AppBundle\Entity\Category $category
      * @return Task
      */
-    public function setCategory(\AppBundle\Entity\Category $category = null)
+    public function setCategory(Category $category = null): Task
     {
         $this->category = $category;
 
@@ -175,7 +183,7 @@ class Task
      *
      * @return \AppBundle\Entity\Category 
      */
-    public function getCategory()
+    public function getCategory(): Category
     {
         return $this->category;
     }
