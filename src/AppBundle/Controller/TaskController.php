@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-//use AppBundle\AppBundle;
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskType;
 use LogicException;
@@ -17,6 +16,19 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TaskController extends Controller
 {
+    /**
+     * @Route("/", name="task_index")
+     * @Method("GET")
+     */
+    public function indexAction()
+    {
+        $tasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findAll();
+
+        return $this->render('task/index.html.twig', [
+            'tasks' => $tasks,
+        ]);
+    }
+
     /**
      * @Route("/create", name="new_task")
      * @Method({"GET", "POST"})
@@ -58,15 +70,41 @@ class TaskController extends Controller
     {
         $deleteForm = $this->createDeleteFrom($task);
 
+        $statusForm = $this->createDoneForm($task);
+
         return $this->render('task/show.html.twig', [
             'task' => $task,
             'delete_form' => $deleteForm->createView(),
+            'status_form' => $statusForm->createView(),
         ]);
     }
 
-    public function editAction()
+    /**
+     * @Route("/edit/{id}", name="edit.html.twig")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Task $task
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function editAction(Request $request, Task $task)
     {
-        // wpisać kod ...
+        $deleteForm = $this->createDeleteFrom($task);
+
+        $editForm = $this->createForm(TaskType::class, $task);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
+        }
+
+        return $this->render('task/edit.html.twig', [
+            'task' => $task,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ]);
+
     }
 
     /**
@@ -88,7 +126,7 @@ class TaskController extends Controller
             $em->flush();
         }
 
-        return 'OK';// zmienic OK na kod właściwy ...
+        return $this->redirectToRoute('task_index');
     }
 
     /**
@@ -99,7 +137,38 @@ class TaskController extends Controller
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('show_task', ['id' => $task->getId()]))
-            ->setMethod('DELETE')
+            ->setMethod(Request::METHOD_DELETE)
+            ->getForm()
+        ;
+    }
+
+    /**
+     * @Route("/status/{id}", name="status_task")
+     * @Method("POST")
+     * @param Task $task
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function statusAction(Task $task)
+    {
+        $status = $task->getDone() ? false : true;
+
+        $task->setDone($status);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($task);
+        $em->flush();
+
+        return $this->redirectToRoute('show_task', ['id' => $task->getId()]);
+    }
+
+    private function createDoneForm(Task $task)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('status_task', [
+                'id' => $task->getId(),
+            ]))
+            ->setMethod(Request::METHOD_POST)
             ->getForm()
         ;
     }

@@ -31,7 +31,8 @@ class Category
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Task", mappedBy="categorygit pub")
+     * @var Task[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Task", mappedBy="category")
      */
     private $tasks;
 
@@ -77,26 +78,26 @@ class Category
     }
 
     /**
-     * Add tasks
+     * Add task
      *
-     * @param \AppBundle\Entity\Task $tasks
+     * @param \AppBundle\Entity\Task $task
      * @return Category
      */
-    public function addTask(Task $tasks): Category
+    public function addTask(Task $task): Category
     {
-        $this->tasks[] = $tasks;
+        $this->tasks[] = $task;
 
         return $this;
     }
 
     /**
-     * Remove tasks
+     * Remove task
      *
-     * @param \AppBundle\Entity\Task $tasks
+     * @param \AppBundle\Entity\Task $task
      */
-    public function removeTask(Task $tasks)
+    public function removeTask(Task $task)
     {
-        $this->tasks->removeElement($tasks);
+        $this->tasks->removeElement($task);
     }
 
     /**

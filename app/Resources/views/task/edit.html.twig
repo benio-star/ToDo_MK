@@ -1,0 +1,25 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    Edit task details
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <h1>Task edit</h1>
+    </div>
+    <div class="form-group">
+        {{ form_start(edit_form) }}
+            {{ form_widget(edit_form) }}
+            <button class="btn btn-success" type="submit">Confirm edit</button>
+        {{ form_end(edit_form) }}
+    </div>
+    <div class="row"></div>
+    <div class="form-group">
+        {{ form_start(delete_form) }}
+            <button class="btn btn-danger" type="submit">Delete</button>
+        {{ form_end(delete_form) }}
+    </div>
+{% endblock %}
+
+

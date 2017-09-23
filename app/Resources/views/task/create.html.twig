@@ -5,18 +5,20 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
 
     <script>
         $(document).ready(function() {
             // configure the bootstrap datepicker
-            $('.js-datepicker').datepicker();
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
         });
     </script>
 {% endblock %}
@@ -28,7 +30,8 @@
                 <h1>Add your task today!</h1>
 
                 {{ form_start(form) }}
-                {{ form_widget(form) }}
+                    {{ form_widget(form) }}
+                <button class="btn btn-primary" type="submit">Add Task</button>
                 {{ form_end(form) }}
             </div>
         </div>

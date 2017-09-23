@@ -1,10 +1,41 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}Task details{% endblock %}
+
 {% block body %}
+    <div class="card">
+        <div class="card-header">
 
+            <h4 class="card-title"> {{ task.title }}</h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text"> {{ task.description }}</p>
+            <p class="card-text"><small class="text-muted"> Due date: {{ task.dueDate|date('Y-m-d') }} - </small>
+                {% if task.done == 1 %}
+                    <span class="badge badge-success">{{ 'DONE' }}</span>
+                {% else %}
+                    <span class="badge badge-warning">{{ 'TO DO' }}</span>
+                {% endif %}
+            </p>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex flex-row">
+                <div class="p-2 text-center">
+                    <a href="{{ path('edit.html.twig', {'id': task.id}) }}" class="btn btn-success">Edit</a>
+                </div>
+                <div class="p-2 text-center">
+                    {{ form_start(delete_form) }}
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                    {{ form_end(delete_form) }}
+                </div>
+                <div class="p-2 text-center">
+                    {{ form_start(status_form) }}
+                    <button class="btn btn-warning" type="submit">Status change</button>
+                    {{ form_end(status_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
-{% block title %}
-
-{% endblock %}
 

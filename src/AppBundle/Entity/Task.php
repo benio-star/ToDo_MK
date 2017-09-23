@@ -58,7 +58,9 @@ class Task
     private $done = false;
 
     /**
+     * @var Category
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="tasks")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
 
@@ -125,7 +127,7 @@ class Task
      * @param \DateTime $dueDate
      * @return Task
      */
-    public function setDueDate(\DateTime $dueDate = null): Task
+    public function setDueDate(\DateTime $dueDate): Task
     {
         $this->dueDate = $dueDate;
 
