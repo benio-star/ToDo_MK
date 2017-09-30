@@ -10,17 +10,14 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        <div class="container" style="margin-top: 10px">
-            <ul class="nav nav-pills">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ path('task_index') }}">Tasks list</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('new_task') }}">Add task</a>
-                </li>
-            </ul>
-        </div>
+        <div class="container">
+            {% if is_granted('ROLE_USER') %}
+                {% include('menuLoginUser.html.twig') %}
+            {% else %}
+                {% include('menuLogout.html.twig') %}
+            {% endif %}
 
+        </div>
         <hr>
 
         <div class="container">
@@ -31,7 +28,7 @@
         <hr>
 
         <div class="container">
-            <p class="text-center">Copyright mk_ToDo 2017</p>
+            <p class="text-center">MK_ToDo 2017</p>
         </div>
 
         {% block javascripts %}

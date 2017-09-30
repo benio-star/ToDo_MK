@@ -1,5 +1,9 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}
+    My tasks
+{% endblock %}
+
 {% block body %}
     {% for task in tasks %}
         <div class="card">
@@ -17,10 +21,9 @@
                 {% endif %}
                 </p>
             </div>
-            <div class="card-footer">
-                <a href="#" class="btn btn-success">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
-            </div>
+            {#<div class="card-footer">#}
+                {#<a href="{{ path('edit_task', { 'id': task.id }) }}" class="btn btn-success">Edit</a>#}
+            {#</div>#}
         </div>
         <hr>
     {% else %}
@@ -29,9 +32,5 @@
             <p>You are very happy, or very lazy man!</p>
         </div>
     {% endfor %}
-{% endblock %}
-
-{% block title %}
-
 {% endblock %}
 

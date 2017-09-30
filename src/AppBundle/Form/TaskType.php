@@ -38,7 +38,7 @@ class TaskType extends AbstractType
                 'label' => 'Considered done?',
                 'required' => false,
             ])
-//            ->add('category', null, ['choice_label' => 'name'])
+            ->add('category', null, ['choice_label' => 'name']) #ustawić queryBuilder, aby wyświetlał kategorie usera
         ;
     }
 

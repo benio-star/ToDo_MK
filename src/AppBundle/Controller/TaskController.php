@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskType;
 use LogicException;
@@ -10,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("task")
@@ -22,7 +24,7 @@ class TaskController extends Controller
      */
     public function indexAction()
     {
-        $tasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findAll();
+        $tasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findBy(['creator' => $this->getUser()]);
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
@@ -34,6 +36,7 @@ class TaskController extends Controller
      * @Method({"GET", "POST"})
      * @param Request $request
      * @return Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws LogicException
      */
     public function createAction(Request $request): Response
@@ -44,6 +47,8 @@ class TaskController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setCreatorId($this->getUser());
+
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($task);
@@ -68,6 +73,10 @@ class TaskController extends Controller
      */
     public function showAction(Task $task): Response
     {
+        if ($this->getUser() !== $task->getCreator()) {
+            throw new AccessDeniedException();
+        }
+
         $deleteForm = $this->createDeleteFrom($task);
 
         $statusForm = $this->createDoneForm($task);
@@ -80,7 +89,7 @@ class TaskController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="edit.html.twig")
+     * @Route("/edit/{id}", name="edit_task")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param Task $task
@@ -88,6 +97,10 @@ class TaskController extends Controller
      */
     public function editAction(Request $request, Task $task)
     {
+        if ($this->getUser() !== $task->getCreator()) {
+            throw new AccessDeniedException();
+        }
+
         $deleteForm = $this->createDeleteFrom($task);
 
         $editForm = $this->createForm(TaskType::class, $task);

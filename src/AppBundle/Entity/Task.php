@@ -64,6 +64,11 @@ class Task
      */
     private $category;
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="tasks")
+     */
+    private $creator;
 
     /**
      * Get id
@@ -173,7 +178,7 @@ class Task
      * @param \AppBundle\Entity\Category $category
      * @return Task
      */
-    public function setCategory(Category $category = null): Task
+    public function setCategory(Category $category)
     {
         $this->category = $category;
 
@@ -185,8 +190,26 @@ class Task
      *
      * @return \AppBundle\Entity\Category 
      */
-    public function getCategory(): Category
+    public function getCategory()
     {
         return $this->category;
     }
+
+    /**
+     * @return User
+     */
+    public function getCreator(): User
+    {
+        return $this->creator;
+    }
+
+    /**
+     * @param User $creator
+     */
+    public function setCreatorId(User $creator)
+    {
+        $this->creator = $creator;
+    }
+
+
 }

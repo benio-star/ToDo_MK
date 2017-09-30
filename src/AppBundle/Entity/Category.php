@@ -36,6 +36,11 @@ class Category
      */
     private $tasks;
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="categories")
+     */
+    private $creator;
 
     /**
      * Get id
@@ -65,7 +70,7 @@ class Category
      *
      * @return string 
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -109,4 +114,21 @@ class Category
     {
         return $this->tasks;
     }
+
+    /**
+     * @return User
+     */
+    public function getCreator(): User
+    {
+        return $this->creator;
+    }
+
+    /**
+     * @param User $creator
+     */
+    public function setCreator(User $creator)
+    {
+        $this->creator = $creator;
+    }
+
 }

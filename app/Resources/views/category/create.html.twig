@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Creating category
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Add new category:</h1>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+        <div class="d-flex flex-row">
+            <div class="p-2 text-center">
+                <button class="btn btn-primary" type="submit">Add Category</button>
+            </div>
+            {{ form_end(form) }}
+            <div class="p-2 text-center">
+                <a href="{{ path('index_category') }}" class="btn btn-dark">Category List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -21,7 +21,7 @@
         <div class="card-footer">
             <div class="d-flex flex-row">
                 <div class="p-2 text-center">
-                    <a href="{{ path('edit.html.twig', {'id': task.id}) }}" class="btn btn-success">Edit</a>
+                    <a href="{{ path('edit_task', {'id': task.id}) }}" class="btn btn-success">Edit</a>
                 </div>
                 <div class="p-2 text-center">
                     {{ form_start(delete_form) }}
